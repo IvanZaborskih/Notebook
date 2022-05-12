@@ -1,21 +1,31 @@
 'use strict';
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('notes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      name: {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      text: {
         type: DataTypes.STRING
       },
-      email: {
-        type: DataTypes.STRING
+      is_important: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       },
-      password: {
-        type: DataTypes.STRING
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      notebook_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +38,6 @@ module.exports = {
     });
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('notes');
   }
 };

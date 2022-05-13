@@ -2,86 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize, User, Note, Notebook } = require('./models/index');
+const router = require('./routes/index');
 
 const PORT = process.env.PORT || 8000;
 const app = express();
 
 app.use(cors({ origin: '*' }));
 app.use(express.json());
-
-app.post('/users', async (req, res) => {
-	const { name, email, password } = req.body;
-
-	try {
-		const user = await User.create({ name, email, password });
-
-		return res.json(user);
-	} catch (err) {
-		console.log(err);
-		return res.status(400).json({ message: err.message });
-	}
-});
-app.get('/users', async (req, res) => {
-	try {
-		const users = await User.findAll();
-
-		return res.send(users);
-	} catch (err) {
-		console.log(err);
-		return res.status(500).send(err);
-	}
-});
-app.get('/users/:id', async (req, res) => {
-	const id = req.params.id;
-	try {
-		const user = await User.findOne({
-			where: { id },
-			include: [
-				{
-					model: Note,
-					as: 'notes'
-				},
-				{
-					model: Notebook,
-					as: 'notebooks'
-				}
-			]
-			// include: ['notes'] - only for one table
-		});
-		return res.send(user);
-	} catch (err) {
-		console.log(err);
-		return res.status(500).send(err);
-	}
-});
-app.put('/users/:id', async (req, res) => {
-	const id = req.params.id;
-	const { name, email, password } = req.body;
-	try {
-		const user = await User.update(
-			{ name, email, password },
-			{ where: { id } }
-		);
-
-		return res.send(user);
-	} catch (err) {
-		console.log(err);
-		return res.status(500).send(err);
-	}
-});
-app.delete('/users/:id', async (req, res) => {
-	const id = req.params.id;
-	try {
-		const user = await User.findOne({ where: { id } });
-
-		await user.destroy();
-		return res.json({ message: 'User deleted' });
-	} catch (err) {
-		console.log(err);
-		return res.status(500).send(err);
-	}
-});
-
+app.use('/api', router);
 
 app.post('/notebooks', async (req, res) => {
 	const { user_id, title } = req.body;

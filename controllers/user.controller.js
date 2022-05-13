@@ -1,83 +1,72 @@
-const { User, Note, Notebook } = require('../models/index');
+const userService = require('../services/user.service');
 
 class UserController {
 	async postUser(req, res) {
 		try {
-			const { name, email, password } = req.body;
-			const user = await User.create({ name, email, password });
+			const user = await userService.postUser(req.body);
 
-			return res.status(200).json(user);
+			if (!user) {
+				throw new Error;
+			} else {
+				return res.status(200).json(user);
+			}
 		} catch (err) {
-			console.log(err);
 			return res.status(400).json({ message: err.message });
 		}
 	}
 
 	async getAllUsers(req, res) {
 		try {
-			const users = await User.findAll();
+			const users = await userService.getAllUsers();
 
-			return res.status(200).send(users);
+			if (!users) {
+				throw new Error;
+			} else {
+				return res.status(200).json(users);
+			}
 		} catch (err) {
-			console.log(err);
 			return res.status(500).send(err);
 		}
 	}
 
 	async getOneUser(req, res) {
 		try {
-			const id = req.params.id;
+			const user = await userService.getOneUser(req.params.id);
 
-			const user = await User.findOne({
-				where: { id },
-				include: [
-					{
-						model: Note,
-						as: 'notes'
-					},
-					{
-						model: Notebook,
-						as: 'notebooks'
-					}
-				]
-				// include: ['notes'] - only for one table
-			});
-			return res.status(200).send(user);
+			if (!user) {
+				throw new Error;
+			} else {
+				return res.status(200).json(user);
+			}
 		} catch (err) {
-			console.log(err);
 			return res.status(500).send(err);
 		}
 	}
 
 	async updateUser(req, res) {
 		try {
-			const id = req.params.id;
-			const { name, email, password } = req.body;
+			const user = await userService.updateUser(req.body, req.params.id);
 
-			const user = await User.update(
-				{ name, email, password },
-				{ where: { id } }
-			);
-
-			const updateUser = await User.findOne({ where: { id } });
-
-			return res.status(200).send(updateUser);
+			if (!user) {
+				throw new Error;
+			} else {
+				return res.status(200).json(user);
+			}
 		} catch (err) {
-			console.log(err);
 			return res.status(500).send(err);
 		}
 	}
 
 	async deleteUser(req, res) {
 		try {
-			const id = req.params.id;
+			const user = userService.deleteUser(req.params.id);
 
-			const user = await User.findOne({ where: { id } });
-			await user.destroy();
-
-			return res.status(200).json({ message: 'User deleted' });
+			if (!user) {
+				throw new Error;
+			} else {
+				return res.status(200).json({ message: 'User deleted' });
+			}
 		} catch (err) {
-			console.log(err);
 			return res.status(500).send(err);
 		}
 	}

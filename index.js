@@ -11,54 +11,6 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use('/api', router);
 
-app.post('/notebooks', async (req, res) => {
-	const { user_id, title } = req.body;
-
-	try {
-		const user = await User.findOne({ where: { id: user_id } });
-		const notebook = await Notebook.create({ title, user_id: user.id });
-
-		return res.json(notebook);
-	} catch (err) {
-		console.log(err);
-		return res.status(500).send({ message: err.message });
-	}
-});
-app.get('/notebooks', async (req, res) => {
-	try {
-		const notebooks = await Notebook.findAll({ include: ['user'] });
-
-		return res.json(notebooks);
-	} catch (err) {
-		console.log(err);
-		return res.status(500).send({ message: err.message });
-	}
-});
-app.get('/notebooks/:id', async (req, res) => {
-	const id = req.params.id;
-	try {
-		const notebook = await Notebook.findOne({
-			where: { id },
-			include: [
-				{
-					model: User,
-					as: 'user'
-				},
-				{
-					model: Note,
-					as: 'notes'
-				}
-			]
-		});
-
-		return res.json(notebook);
-	} catch (err) {
-		console.log(err);
-		return res.status(500).send({ message: err.message });
-	}
-});
-
-
 app.post('/notes', async (req, res) => {
 	const { user_id, title, text, is_important, notebook_id } = req.body;
 

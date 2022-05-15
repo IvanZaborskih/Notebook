@@ -27,12 +27,12 @@ class UserService {
 			where: { id: userId },
 			include: [
 				{
-					model: Note,
-					as: 'notes'
-				},
-				{
 					model: Notebook,
 					as: 'notebooks'
+				},
+				{
+					model: Note,
+					as: 'notes'
 				}
 			]
 			// include: ['notes'] - only for one table
@@ -56,8 +56,7 @@ class UserService {
 		if (!user) {
 			return false;
 		} else {
-			const updatedUser = await User.findByPk(userId);
-			return updatedUser;
+			return await User.findByPk(userId);
 		}
 	}
 

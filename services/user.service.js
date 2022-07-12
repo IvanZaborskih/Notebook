@@ -1,17 +1,6 @@
 const { User, Note, Notebook } = require('../models/index');
 
 class UserService {
-	async postUser(userBody) {
-		const { name, email, password } = userBody;
-		const user = await User.create({ name, email, password });
-
-		if (!user) {
-			return false;
-		} else {
-			return user;
-		}
-	}
-
 	async getAllUsers() {
 		const users = await User.findAll();
 

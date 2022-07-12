@@ -1,20 +1,6 @@
 const userService = require('../services/user.service');
 
 class UserController {
-	async postUser(req, res) {
-		try {
-			const user = await userService.postUser(req.body);
-
-			if (!user) {
-				throw new Error;
-			} else {
-				return res.status(200).json(user);
-			}
-		} catch (err) {
-			return res.status(400).json({ message: err.message });
-		}
-	}
-
 	async getAllUsers(req, res) {
 		try {
 			const users = await userService.getAllUsers();

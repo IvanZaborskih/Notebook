@@ -41,6 +41,16 @@ class AuthController {
 		}
 	}
 
+	async check(req, res) {
+		try {
+			const token = await authService.check(req.body);
+
+			return res.json({ token });
+		} catch (err) {
+			return res.status(500).json({ message: err.message });
+		}
+	}
+
 	async getAllUsers(req, res) {
 		try {
 			const users = await authService.getAllUsers();

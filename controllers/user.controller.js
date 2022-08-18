@@ -17,7 +17,7 @@ class UserController {
 
 	async getOneUser(req, res) {
 		try {
-			const user = await userService.getOneUser(req.params.id);
+			const user = await userService.getOneUser(req.user.id);
 
 			if (!user) {
 				throw new Error;
@@ -31,7 +31,7 @@ class UserController {
 
 	async updateUser(req, res) {
 		try {
-			const user = await userService.updateUser(req.body, req.params.id);
+			const user = await userService.updateUser(req.body, req.user.id);
 
 			if (!user) {
 				throw new Error;
@@ -45,7 +45,7 @@ class UserController {
 
 	async deleteUser(req, res) {
 		try {
-			const user = userService.deleteUser(req.params.id);
+			const user = userService.deleteUser(req.user.id);
 
 			if (!user) {
 				throw new Error;

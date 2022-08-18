@@ -42,6 +42,14 @@ class AuthService {
 		return token;
 	}
 
+	async check(checkBody) {
+		const { email, password } = checkBody;
+		const user = await User.findOne({ where: { email } });
+		const token = generateAccessToken(user.id, email);
+
+		return token;
+	}
+
 	async getAllUsers() {
 		const users = await User.findAll();
 

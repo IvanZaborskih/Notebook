@@ -1,19 +1,19 @@
 const userService = require('../services/user.service');
 
 class UserController {
-	async getAllUsers(req, res) {
-		try {
-			const users = await userService.getAllUsers();
+	// async getAllUsers(req, res) {
+	// 	try {
+	// 		const users = await userService.getAllUsers();
 
-			if (!users) {
-				throw new Error;
-			} else {
-				return res.status(200).json(users);
-			}
-		} catch (err) {
-			return res.status(500).send(err);
-		}
-	}
+	// 		if (!users) {
+	// 			throw new Error;
+	// 		} else {
+	// 			return res.status(200).json(users);
+	// 		}
+	// 	} catch (err) {
+	// 		return res.status(500).send(err);
+	// 	}
+	// }
 
 	async getOneUser(req, res) {
 		try {

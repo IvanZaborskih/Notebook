@@ -1,15 +1,6 @@
 const { User, Note, Notebook } = require('../models/index');
 
 class UserService {
-	async getAllUsers() {
-		const users = await User.findAll();
-
-		if (!users) {
-			return false;
-		} else {
-			return users;
-		}
-	}
 
 	async getOneUser(userId) {
 		const user = await User.findOne({
